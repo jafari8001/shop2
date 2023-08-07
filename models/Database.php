@@ -7,7 +7,7 @@ class Database{
     private static $instance;
 
     public function __construct($db_name) {
-        include "./config.php";
+    
         $this->dns = DNS;
         $this->db_user = DB_USER;
         $this->db_pass = DB_PASS;
@@ -45,9 +45,9 @@ class Database{
                 quantity INT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP  NULL ON UPDATE CURRENT_TIMESTAMP,
-                deleted_at TIMESTAMP  NULL
-                FOREIGN KEY (user_id) REFERENCES users (id),
-                FOREIGN KEY (product_id) REFERENCES products (id)
+                deleted_at TIMESTAMP  NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (product_id) REFERENCES products(id)
             )");
         } catch (PDOException $err) {
             die("Database connection error: " . $err->getMessage());
@@ -61,66 +61,6 @@ class Database{
         }
         return self::$instance;
     }
-
-    // public function getConnection() {
-    //     return $this->connection;
-    // }
-
-    // public function insertDB($data){
-    //     $keys = array_keys($data);
-    //     $values = array_values($data);
-    // }
-
-    // create default tabels 
-    // public function create_table(){
-        // try {
-        //     $this->connection->exec("CREATE TABLE users (
-        //         user_id INT PRIMARY KEY AUTO_INCREMENT,
-        //         username VARCHAR(255) NOT NULL,
-        //         email VARCHAR(255) NOT NULL,
-        //         password VARCHAR(255) NOT NULL,
-        //         role VARCHAR(255) NOT NULL,
-        //         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        //         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        //         deleted_at TIMESTAMP
-        //     )");
-                
-        //     $this->connection->exec("CREATE TABLE products (
-        //         product_id INT PRIMARY KEY AUTO_INCREMENT,
-        //         name VARCHAR(255) NOT NULL,
-        //         price DECIMAL(10, 2) NOT NULL,
-        //         views INT DEFAULT 0,
-        //         sales INT DEFAULT 0,
-        //         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        //         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        //         deleted_at TIMESTAMP
-        //     )");
-            
-        //     $this->connection->exec("CREATE TABLE carts (
-        //         cart_id INT PRIMARY KEY AUTO_INCREMENT,
-        //         user_id INT NOT NULL,
-        //         product_id INT NOT NULL,
-        //         quantity INT NOT NULL,
-        //         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        //         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        //         deleted_at TIMESTAMP,
-        //         FOREIGN KEY (user_id) REFERENCES users (user_id),
-        //         FOREIGN KEY (product_id) REFERENCES products (product_id)
-        //     )");
-            
-        //     return [
-        //         "status"=>"200",
-        //         "message"=>"tables created",
-        //         "data"=>""
-        //     ];
-        // } catch (PDOException $err) {
-        //     return [
-        //         "status"=>"500",
-        //         "message"=>$err->getMessage(),
-        //         "data"=>""
-        //     ];
-        // }
-    // }
 }
 
 ?>

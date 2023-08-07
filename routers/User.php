@@ -1,23 +1,30 @@
 <?php
-    include "./models/User.php";
-    $user = new User();
-    function get_all_users($db){
-        global $user;
-        echo json_encode($user->getAllUsers());
-    }
+    class UserRouter{
+        private $db;
+        private $user;
+        public function __construct($db) {
+            $this->db = $db;
+            $this->user = new User($this->db);
+        }
 
-    function add_user($db){
-        global $user;
+        public function get_all_users(){
+            return json_encode($this->user->getAllUsers());
+        }
+
+        public function add_user(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $inputJSON = file_get_contents('php://input');
             $data = json_decode($inputJSON, true);
 
-            echo json_encode($user->addUser($data));
+            return json_encode($this->user->addUser($data));
             
         }else {
-            echo json_decode("data is not set");
+            return json_decode("data is not set");
         }
-        
     }
+
+
+    }
+
 ?>
