@@ -1,12 +1,12 @@
 <?php
     include "./models/User.php";
     $user = new User();
-    function get_all_users(){
+    function get_all_users($db){
         global $user;
         echo json_encode($user->getAllUsers());
     }
 
-    function add_user(){
+    function add_user($db){
         global $user;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

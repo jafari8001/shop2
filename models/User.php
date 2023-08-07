@@ -1,12 +1,8 @@
 <?php
-include "./models/Database.php";
 class User{
-    private $db;
-    public function __construct() {
-        $this->db = Database::getInstance("shop") ;
-    }
 
-    public function addUser($data){
+    public function addUser($data, $db){
+
         if (!isset($data['username']) || empty($data['username']) ||
             !isset($data['email']) || empty($data['email']) ||
             !isset($data['password']) || empty($data['password']) ||
@@ -22,14 +18,14 @@ class User{
             $password = $data['password'];
             $role = $data['role'];
         }
-        if ($this->userExists($username)) {
+        if ($this->userExists($username, $db)) {
             return [
                 "status" => "409",
                 "message" => "This Username is exist",
                 "data" => ""
             ];
         }else {
-            $connection = $this->db->getConnection();
+            $connection = $db->getConnection();
             $query = "INSERT INTO users (username, email, password, role) VALUE (:username, :email, :password, :role)";
             try {
                 $addUser = $connection->prepare($query);
@@ -59,8 +55,8 @@ class User{
         }
     }
 
-    public function userExists($username){
-        $connection = $this->db->getConnection();
+    public function userExists($username, $db){
+        $connection = $db->getConnection();
         $query = "SELECT * FROM `users` WHERE username = :username";
         $check = $connection->prepare($query);
         $check->execute(["username"=>$username]);
@@ -71,8 +67,8 @@ class User{
         }
     }
 
-    public function getAllUsers(){
-        $connection = $this->db->getConnection();
+    public function getAllUsers($db){
+        $connection = $db->getConnection();
         $query = "SELECT * FROM users";
         try {
             $stmt = $connection->query($query);

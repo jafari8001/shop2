@@ -1,22 +1,21 @@
 <?php
     include "./routers/Router.php";
     include "./routers/User.php";
-    include "./routers/Database.php";
     include "./models/Database.php";
 
+
     $router = new Router();
-    
-    
-    $router->addRoute('create-database', function () {
-        create_database();
-    });
+    $dbClass = new Database("shop");
+    $db = $dbClass::getInstance("shop");
     
     $router->addRoute('get-all-users', function () {
-        get_all_users();
+        global $db;
+        get_all_users($db);
     });
 
     $router->addRoute('add-user', function () {
-        add_user();
+        global $db;
+        add_user($db);
     });
     
     $url = $_SERVER['REQUEST_URI'];
